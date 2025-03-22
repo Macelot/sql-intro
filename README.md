@@ -173,8 +173,5 @@ public class ExibirUsuarios {
 
 ---
 
-## 🧑‍💻 Conclusão
-Este manual apresentou comandos essenciais de SQL e a execução deles com Java e PostgreSQL. Com isso, você pode criar, manipular e exibir dados facilmente.
 
-Caso tenha dúvidas ou precise de mais detalhes, entre em contato com seu instrutor. 😊
 
