@@ -99,10 +99,11 @@ TRUNCATE TABLE usuarios;
 ```
 ### Executar com Java
 ```java
-try (Connection conn = ConexaoPostgreSQL.conectar();
-     var stmt = conn.createStatement()) {
-    stmt.executeUpdate("TRUNCATE TABLE usuarios");
-    System.out.println("Tabela truncada!");
+try {
+  Connection conn = ConexaoPostgreSQL.conectar();
+  Statement stmt = conn.createStatement();
+  stmt.executeUpdate("TRUNCATE TABLE usuarios");
+  System.out.println("Tabela truncada!");
 }catch(Exception ex){
   System.out.println(ex.getMessage());
 }
@@ -116,12 +117,13 @@ INSERT INTO usuarios (nome, email) VALUES ('João Silva', 'joao@email.com');
 ```
 ### Executar com Java
 ```java
-try (Connection conn = ConexaoPostgreSQL.conectar();
-     var stmt = conn.prepareStatement("INSERT INTO usuarios (nome, email) VALUES (?, ?)");) {
-    stmt.setString(1, "Maria Souza");
-    stmt.setString(2, "maria@email.com");
-    stmt.executeUpdate();
-    System.out.println("Usuário inserido com sucesso!");
+try {
+  Connection conn = ConexaoPostgreSQL.conectar();
+  Statement stmt = conn.prepareStatement("INSERT INTO usuarios (nome, email) VALUES (?, ?)");
+  stmt.setString(1, "Maria Souza");
+  stmt.setString(2, "maria@email.com");
+  stmt.executeUpdate();
+  System.out.println("Usuário inserido com sucesso!");
 }catch(Exception ex){
   System.out.println(ex.getMessage());
 }
@@ -135,12 +137,13 @@ SELECT * FROM usuarios;
 ```
 ### Executar com Java e Exibir no Console
 ```java
-try (Connection conn = ConexaoPostgreSQL.conectar();
-     var stmt = conn.createStatement();
-     var rs = stmt.executeQuery("SELECT * FROM usuarios")) {
-    while (rs.next()) {
-        System.out.println("ID: " + rs.getInt("id") + ", Nome: " + rs.getString("nome") + ", Email: " + rs.getString("email"));
-    }
+try {
+  Connection conn = ConexaoPostgreSQL.conectar();
+  Statement stmt = conn.createStatement();
+  ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+  while (rs.next()) {
+    System.out.println("ID: " + rs.getInt("id") + ", Nome: " + rs.getString("nome") + ", Email: " + rs.getString("email"));
+  }
 }catch(Exception ex){
   System.out.println(ex.getMessage());
 }
