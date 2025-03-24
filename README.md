@@ -85,6 +85,8 @@ try (Connection conn = ConexaoPostgreSQL.conectar();
      var stmt = conn.createStatement()) {
     stmt.executeUpdate("CREATE TABLE exemplo (id SERIAL PRIMARY KEY, nome VARCHAR(50))");
     System.out.println("Tabela criada com sucesso!");
+}catch(Exception ex){
+  System.out.println(ex.getMessage());
 }
 ```
 
@@ -100,6 +102,8 @@ try (Connection conn = ConexaoPostgreSQL.conectar();
      var stmt = conn.createStatement()) {
     stmt.executeUpdate("TRUNCATE TABLE usuarios");
     System.out.println("Tabela truncada!");
+}catch(Exception ex){
+  System.out.println(ex.getMessage());
 }
 ```
 
@@ -117,6 +121,8 @@ try (Connection conn = ConexaoPostgreSQL.conectar();
     stmt.setString(2, "maria@email.com");
     stmt.executeUpdate();
     System.out.println("Usuário inserido com sucesso!");
+}catch(Exception ex){
+  System.out.println(ex.getMessage());
 }
 ```
 
@@ -134,6 +140,8 @@ try (Connection conn = ConexaoPostgreSQL.conectar();
     while (rs.next()) {
         System.out.println("ID: " + rs.getInt("id") + ", Nome: " + rs.getString("nome") + ", Email: " + rs.getString("email"));
     }
+}catch(Exception ex){
+  System.out.println(ex.getMessage());
 }
 ```
 
@@ -148,26 +156,44 @@ try (Connection conn = ConexaoPostgreSQL.conectar();
   jTable1.setModel(model);
 ```
 
+ou 
+```java
+Object[] coluna=new Object[4];
+coluna[0] = "Nome";
+coluna[1] = "Salário";
+coluna[2] = "Nascimento";
+coluna[3] = "Data Cadastro";
+
+Object[][] usuario=new Object[10][4];
+usuario[0][0]="Marcelo";
+usuario[0][1]="28000,50";
+usuario[0][2]="1979-11-21";
+usuario[0][3]="2025-03-24";
+
+jTable1.setModel(new DefaultTableModel(usuario,coluna));
+
+```
+
 ### Exemplo de Exibição com JTable
 ```java
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
-public class ExibirUsuarios {
-    public static void main(String[] args) throws Exception {
-        try (Connection conn = ConexaoPostgreSQL.conectar();
-             var stmt = conn.createStatement();
-             var rs = stmt.executeQuery("SELECT * FROM usuarios")) {
-            String[] colunas = {"ID", "Nome", "Email"};
-            DefaultTableModel model = new DefaultTableModel(colunas, 0);
-            while (rs.next()) {
-                model.addRow(new Object[]{rs.getInt("id"), rs.getString("nome"), rs.getString("email")});
-            }
-            JTable table = new JTable(model);
-            JOptionPane.showMessageDialog(null, new JScrollPane(table));
-        }
+//...
+try {
+    Connection conn = ConexaoPostgreSQL.conectar();
+    var stmt = conn.createStatement();
+    var rs = stmt.executeQuery("SELECT * FROM usuarios");
+    String[] colunas = {"ID", "Nome", "Email"};
+    DefaultTableModel model = new DefaultTableModel(colunas, 0);
+    while (rs.next()) {
+        model.addRow(new Object[]{rs.getInt("id"), rs.getString("nome"), rs.getString("email")});
     }
+    JTable table = new JTable(model);
+    JOptionPane.showMessageDialog(null, new JScrollPane(table));
+}catch(Exception ex){
+  System.out.println(ex.getMessage());
 }
 ```
 
