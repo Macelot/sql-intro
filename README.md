@@ -81,10 +81,11 @@ DROP TABLE usuarios;
 
 ### Executar com Java
 ```java
-try (Connection conn = ConexaoPostgreSQL.conectar();
-     var stmt = conn.createStatement()) {
-    stmt.executeUpdate("CREATE TABLE exemplo (id SERIAL PRIMARY KEY, nome VARCHAR(50))");
-    System.out.println("Tabela criada com sucesso!");
+try {
+  Connection conn = ConexaoPostgreSQL.conectar();
+  var stmt = conn.createStatement();
+  stmt.executeUpdate("CREATE TABLE exemplo (id SERIAL PRIMARY KEY, nome VARCHAR(50))");
+  System.out.println("Tabela criada com sucesso!");
 }catch(Exception ex){
   System.out.println(ex.getMessage());
 }
