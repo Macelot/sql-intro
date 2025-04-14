@@ -235,3 +235,90 @@ try {
     JOptionPane.showMessageDialog(this, "Erro ao apagar");
 }
 ```
+## Passo a Passo para criar um projeto no Netbeans com acesso a PostgreSQL
+# 1 Criar um projeto Maven
+# 2 Editar o arquivo pom.xml
+Criar a tag 
+```
+<dependencies>
+```
+e adicionar a dependência do banco de dados PostgreSQL.
+```xml
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.5</version>
+        </dependency>
+    </dependencies>
+```
+# 3 Criar um JFrame, apagar a classe com o main e configurar o JFrame como classe principal:
+Clicar com botão direito no projeto, clicar em Propriedades, clicar em Run, ir em main class, clicar em Browse... selecionar o JFrame criado.
+
+# 4 Iniciar o banco com o Start PostgreSQL
+Para se conectar no banco vamos colocar o código no JFrame principal:
+Nosso JFrame vai ficar com este método "conecta()"
+OBS. a primeira linha não deve ser copiada, serve apenas para você se localizar.
+
+```java
+public class Tela extends javax.swing.JFrame {
+    public static Connection conexao;
+    
+    public void conecta(){
+        System.out.println("Conetando o banco");
+        try {
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://localhost:5432/postgres";
+            String user = "postgres";
+            String pass = "feevale";
+            conexao = DriverManager.getConnection(url, user, pass);
+            botaoConecta.setBackground(Color.green);
+            labelConecta.setText("Conectado");
+        } catch (Exception e) {
+            botaoConecta.setBackground(Color.red);
+            labelConecta.setText("Desconectado");
+        }
+    }
+    ...
+```
+O método "conecta()" é executado tanto quando o progama é aberto quanto quando clicamos no botão de status da conexão.
+
+# 5 Criar os JInternalFrame e fazer as opções de menu para chamar eles, com o seguinte comando:
+```java
+    TelaInsert i;
+    i = new TelaInsert();
+    jDesktopPane2.add(i);
+    i.setVisible(true);
+```
+O comando acima supoe que temos um JInternalFrame com o nome TelaInsert.
+Precisamos também tem em nosso JFrame um JDesktopPane, no caso nosso JDesktopPane, é o jDesktopPane2.
+
+# 6 na tela do insert supondo que temos campos para serem preenchidos.
+
+Podemos colocar o seguinte código no botão insert
+```java
+try {
+    String comando;
+    comando = "INSERT into veiculos "
+            + "(modelo) VALUES "
+            + "(?)";
+    PreparedStatement pstmt;
+    pstmt = Tela.conexao.prepareStatement(comando);
+    pstmt.setString(1, txtModelo.getText());
+    pstmt.executeUpdate();
+    JOptionPane.showMessageDialog(this, "Inserido com Sucesso");
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Erro na inserção "+e.getMessage());
+}
+```
+OBS. para funcionar, precisamos ter a conexão feita no Tela.
+OBS2. Neste insert temos uma informação que foi digitada pelo usuário, no caso foi o modelo do veículo.
+Tal informação foi digitada em um Campo de Texto com o nome "txtModelo".
+
+# 7 na tela de Seleção podemos colocar o seguinte código
+
+
+
+
+
