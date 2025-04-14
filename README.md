@@ -318,7 +318,41 @@ Tal informação foi digitada em um Campo de Texto com o nome "txtModelo".
 
 # 7 na tela de Seleção podemos colocar o seguinte código
 
-
+```java
+try {
+            Object[] colunas = new Object[2];
+            colunas[0]="Id";
+            colunas[1]="Modelo";
+            
+            Object[][] linhas = new Object[10][2];
+            
+            Connection conexao;
+            String comando;
+            conexao = Tela.conexao;
+            comando = "SELECT * from veiculos";
+            Statement stmt;
+            ResultSet resultado;
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(comando);
+            int conta=0;
+            while(resultado.next()){
+                System.out.println(
+                        resultado.getString("id")
+                );
+                System.out.println(
+                        resultado.getString("modelo")
+                );
+                linhas[conta][0] = resultado.getString("id");
+                linhas[conta][1] = resultado.getString("modelo");
+            }
+            DefaultTableModel t;
+            t = new DefaultTableModel(linhas,colunas);
+            jTable1.setModel(t);
+            
+        } catch (Exception e) {
+            System.out.println("Erro "+e.getMessage());
+        }
+```
 
 
 
